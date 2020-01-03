@@ -37,7 +37,8 @@ void main()
   
   bool inside_tile = (abs(v.x) < 0.5 * (tileSize + tileBoundary) && abs(v.y) < 0.5 * (tileSize + tileBoundary));
   bool out_of_range = range < minRange || range > maxRange;
-  bool is_car_point = (in_vertex.x < 3.0 && in_vertex.x > -2.0 && abs(in_vertex.y) < 2.0);
+  // bool is_car_point = (in_vertex.x < 3.0 && in_vertex.x > -2.0 && abs(in_vertex.y) < 2.0);
+  bool is_car_point = false;
    
   vs_out.valid = false;
   
