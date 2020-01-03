@@ -5,6 +5,9 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_C_FLAGS "-Wall -O3 -g")
 set(CMAKE_CXX_FLAGS "-Wall -O3 -g")
 
+find_program(PYTHON_EXECUTABLE2 "python2")
+set(PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE2})
+
 find_package(OpenGL REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5Gui REQUIRED) 
