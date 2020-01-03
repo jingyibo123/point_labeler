@@ -387,7 +387,10 @@ void KittiReader::readPoses(const std::string& filename, std::vector<Eigen::Matr
   // convert from camera to velodyne coordinate system.
   Eigen::Matrix4f Tr = calib_["Tr"];
   Eigen::Matrix4f Tr_inv = Tr.inverse();
+  Eigen::Matrix4f T_b_c =
+      (Eigen::Matrix4f() << 0, 0, 1, 0, -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0,
+          1).finished();
   for (uint32_t i = 0; i < poses.size(); ++i) {
-    poses[i] = Tr_inv * poses[i] * Tr;
+    poses[i] = T_b_c * poses[i] * Tr;
   }
 }
