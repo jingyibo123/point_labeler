@@ -698,11 +698,18 @@ void Mainframe::generateLabelButtons() {
 
 void Mainframe::updateFiltering(bool value) {
   if (value) {
-    ui.mViewportXYZ->setFilteredLabels(filteredLabels);
-  } else {
-    std::vector<uint32_t> empty;
+    std::vector<uint32_t> reverse;
 
-    ui.mViewportXYZ->setFilteredLabels(empty);
+    for(const auto& pair : this->label_names){
+      auto iter = std::find(this->filteredLabels.begin(), this->filteredLabels.end(), pair.first);
+      if(iter == this->filteredLabels.end()){
+        reverse.emplace_back(pair.first);
+      }
+    }
+
+    ui.mViewportXYZ->setFilteredLabels(reverse);
+  } else {
+    ui.mViewportXYZ->setFilteredLabels(filteredLabels);
   }
 }
 
