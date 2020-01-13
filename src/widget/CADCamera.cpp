@@ -1,6 +1,7 @@
 #include "CADCamera.h"
 #include <glow/glutil.h>
 #include <iostream>
+#include "data/Math.h"
 
 const Eigen::Matrix4f& CADCamera::matrix() {
   mutex_.lock();
