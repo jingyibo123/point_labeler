@@ -18,15 +18,34 @@ find_package(Boost REQUIRED COMPONENTS filesystem system)
 find_package(catkin COMPONENTS 
      glow)
 
-if(catkin_FOUND)
-  message("Found catkin")
-  catkin_package(
-    CATKIN_DEPENDS
-      glow
-    DEPENDS
-      Boost
-  )
-endif()
+set(GLOW_DIR "${CMAKE_SOURCE_DIR}/glow")
+
+
+message(STATUS "Using GLOW in ${GLOW_DIR}")
+
+add_subdirectory(${GLOW_DIR} ${GLOW_DIR}/build)
+
+set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${GLOW_DIR}/cmake")
+file(GLOB glowCmakeFiles ${GLOW_DIR}/cmake/*.cmake)
+foreach(cmakeFile ${glowCmakeFiles})
+    message("INCLUDE ${cmakeFile}")
+    INCLUDE(${cmakeFile})
+endforeach(cmakeFile)
+
+include_directories(/home/yibo/workspace/dl/point_labeler/catkin_ws/src/glow/src)
+
+#find_package(catkin COMPONENTS
+#     glow)
+#
+#if(catkin_FOUND)
+#  message("Found catkin")
+#  catkin_package(
+#    CATKIN_DEPENDS
+#      glow
+#    DEPENDS
+#      Boost
+#  )
+#endif()
 
 include_directories(${catkin_INCLUDE_DIRS} src/ ${QT5_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} /usr/include/eigen3)
 
@@ -127,10 +146,13 @@ if(NOT GTEST_FOUND)
 endif()
 
 
-if(GTEST_FOUND)
-  enable_testing()
-  add_subdirectory(src/test)
-endif()
+#if(GTEST_FOUND)
+#  enable_testing()
+#  add_subdirectory(src/test)
+#endif()
 
-target_link_libraries(labeler ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} pthread Qt5::Xml Qt5::OpenGL Qt5::Widgets)
+target_link_libraries(labeler ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} pthread Qt5::Xml Qt5::OpenGL Qt5::Widgets)
+
+
+target_link_libraries(labeler glow glow_util)
 
