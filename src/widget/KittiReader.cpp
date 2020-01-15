@@ -328,7 +328,7 @@ void KittiReader::update(const std::vector<uint32_t>& indexes, std::vector<Label
       continue;
     }
 
-    std::ofstream out(label_filenames_[indexes[i]].c_str());
+    std::ofstream out(label_filenames_[indexes[i]].c_str(), std::ios_base::binary);
     out.write((const char*)&(*labels[i])[0], labels[i]->size() * sizeof(uint32_t));
     out.close();
   }
