@@ -60,6 +60,8 @@ class Mainframe : public QMainWindow {
 
   void updateLabelButtons();
 
+  void updateCursor();
+
   std::vector<uint32_t> indexes_;
   std::vector<PointcloudPtr> points_;
   std::vector<LabelsPtr> labels_;

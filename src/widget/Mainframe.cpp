@@ -601,6 +601,7 @@ void Mainframe::changeRadius(int value) {
   ui.mRadiusSlider->setValue(value);
 
   ui.mViewportXYZ->setRadius(value);
+  updateCursor();
 }
 
 void Mainframe::changeMode(int mode, bool checked) {
@@ -649,6 +650,7 @@ void Mainframe::changeMode(int mode, bool checked) {
       //    ui.mTools->setCurrentIndex(1);
     }
   }
+  updateCursor();
 }
 
 void Mainframe::generateLabelButtons() {
@@ -1222,5 +1224,28 @@ void Mainframe::updateLabelButtons() {
     btn->setVisible(true);
     ui.labelsGroupBox->addWidget(btn, std::floor((double)index / btnsPerRow),
                                  index - std::floor((double)index / btnsPerRow) * btnsPerRow);
+  }
+}
+
+
+void Mainframe::updateCursor(){
+  if (ui.mViewportXYZ->getMode() == Viewport::PAINT) {
+
+    //    ui.mTools->setCurrentIndex(1);
+
+    QPixmap pixmap(QSize(2 * ui.mViewportXYZ->getRadius(), 2 * ui.mViewportXYZ->getRadius()));
+    pixmap.fill(Qt::transparent);
+
+    QPainter painter(&pixmap);
+    QRect r(QPoint(), pixmap.size());
+    r.adjust(1, 1, -1, -1);
+    painter.drawEllipse(r);
+    painter.end();
+
+    QCursor cursor(pixmap);
+    ui.mViewportXYZ->setCursor(cursor);
+  } else {
+    QCursor cursor;
+    ui.mViewportXYZ->setCursor(cursor);
   }
 }

@@ -135,6 +135,8 @@ class Viewport : public QGLWidget {
   void setFixedAxis(AXIS axis);
 
   void setRadius(float value);
+  float getRadius() const {return mRadius;}
+  MODE getMode() const {return mMode;}
   /** \brief label used when in PAINT **/
   void setLabel(uint32_t label);
   void setLabelColors(const std::map<uint32_t, glow::GlColor>& colors);
