@@ -1435,7 +1435,7 @@ void Viewport::mouseMoveEvent(QMouseEvent* event) {
       if (buttonPressed) {
         if (event->buttons() & Qt::LeftButton)
           labelPoints(event->x(), event->y(), mRadius, mCurrentLabel, false);
-        else
+        else if (event->buttons() & Qt::RightButton)
           labelPoints(event->x(), event->y(), mRadius, mCurrentLabel, true);
       }
       updateGL();
