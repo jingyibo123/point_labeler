@@ -483,6 +483,8 @@ Mainframe::Mainframe() : mChangesSinceLastSave(false) {
     img.save("screenshot.png");
     QApplication::clipboard()->setImage(img);
   });
+
+  updateLabelButtons();
 }
 
 Mainframe::~Mainframe() {}
