@@ -83,7 +83,7 @@ Viewport::Viewport(QWidget* parent, Qt::WindowFlags f)
   initPrograms();
   initVertexBuffers();
 
-  drawingOption_["remission"] = true;
+  drawingOption_["remission"] = false;
   drawingOption_["color"] = false;
   drawingOption_["single scan"] = false;
   drawingOption_["show all points"] = false;

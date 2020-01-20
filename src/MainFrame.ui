@@ -294,9 +294,9 @@
            <property name="text">
             <string>remission</string>
            </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
+           <!--<property name="checked">-->
+            <!--<bool>true</bool>-->
+           <!--</property>-->
           </widget>
          </item>
          <item>
