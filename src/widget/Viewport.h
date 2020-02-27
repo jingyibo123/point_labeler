@@ -28,7 +28,6 @@
 #include <glow/GlVertexArray.h>
 #include <glow/util/GlCamera.h>
 #include <glow/util/RoSeCamera.h>
-#include "CADCamera.h"
 
 #include "common.h"
 
@@ -215,8 +214,6 @@ class Viewport : public QGLWidget {
 
   std::vector<PointcloudPtr> points_;
   std::vector<LabelsPtr> labels_;
-  glow::RoSeCamera rosecam;
-  CADCamera cadcam;
   std::shared_ptr<glow::GlCamera> mCamera;
   std::map<std::string, std::shared_ptr<glow::GlCamera>> cameras_;
   bool mChangeCamera{false};

@@ -11,6 +11,7 @@
 #include <chrono>
 #include <fstream>
 #include "rv/Stopwatch.h"
+#include "CADCamera.h"
 
 #include <glow/GlState.h>
 #include <deque>
