@@ -41,6 +41,7 @@ Mainframe::Mainframe() : mChangesSinceLastSave(false) {
 
   connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(open()));
   connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(save()));
+  connect(ui.actionUndo, SIGNAL(triggered()), this, SLOT(undo()));
 
   /** initialize the paint button mapping **/
   connect(ui.btnBrushMode, &QToolButton::released,
@@ -581,6 +582,11 @@ void Mainframe::save() {
   mChangesSinceLastSave = false;
   statusBar()->clearMessage();
   info_->close();
+}
+
+void Mainframe::undo() {
+
+  ui.mViewportXYZ->undo();
 }
 
 void Mainframe::changeRadius(int value) {

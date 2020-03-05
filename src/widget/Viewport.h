@@ -63,7 +63,9 @@ class Viewport : public QGLWidget {
   void setPoints(const std::vector<PointcloudPtr>& points, std::vector<LabelsPtr>& labels);
 
   /** \brief update all labels with GPU labels. **/
+  // download labels from GPU to CPU
   void updateLabels();
+  void undo();
 
   void setLabelVisibility(uint32_t label, bool visible);
 
@@ -214,6 +216,7 @@ class Viewport : public QGLWidget {
 
   std::vector<PointcloudPtr> points_;
   std::vector<LabelsPtr> labels_;
+  std::vector<LabelsPtr> prev_labels_;
   std::shared_ptr<glow::GlCamera> mCamera;
   std::map<std::string, std::shared_ptr<glow::GlCamera>> cameras_;
   bool mChangeCamera{false};

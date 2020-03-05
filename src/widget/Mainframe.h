@@ -26,6 +26,7 @@ class Mainframe : public QMainWindow {
  public slots:
   void open();
   void save();
+  void undo();
   void changeRadius(int radius);
   void changeMode(int mode, bool checked);
 

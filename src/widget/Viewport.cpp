@@ -398,7 +398,7 @@ void Viewport::setPoints(const std::vector<PointcloudPtr>& p, std::vector<Labels
 
   glow::_CheckGlError(__FILE__, __LINE__);
 
-  updateLabels();
+//  updateLabels();
 
   if (labelInstances_) {
     updateBoundingBoxes();
@@ -494,6 +494,12 @@ void Viewport::updateHeightmap() {
 void Viewport::updateLabels() {
   glow::_CheckGlError(__FILE__, __LINE__);
 
+  // back up current labels
+  prev_labels_.clear();
+  for (const auto& l : labels_){
+    prev_labels_.emplace_back(std::make_shared<std::vector<uint32_t>>(*l));
+  }
+
   if (labels_.size() == 0) return;
 
   glow::GlBuffer<uint32_t> bufReadLabels{glow::BufferTarget::ARRAY_BUFFER, glow::BufferUsage::STREAM_READ};
@@ -531,6 +537,13 @@ void Viewport::updateLabels() {
 
   glow::_CheckGlError(__FILE__, __LINE__);
 }
+
+void Viewport::undo(){
+  for(int i = 0; i < labels_.size(); ++i){
+    swap(*labels_[i], *prev_labels_[i]);
+  }
+  setPoints(points_, labels_);
+};
 
 void Viewport::setRadius(float value) { mRadius = value; }
 
@@ -1284,6 +1297,7 @@ void Viewport::mousePressEvent(QMouseEvent* event) {
         }
 
         polygonPoints_.clear();
+        updateLabels();
       }
 
       bufPolygonPoints_.assign(polygonPoints_);
@@ -1393,8 +1407,8 @@ void Viewport::mouseReleaseEvent(QMouseEvent* event) {
           labelPoints(event->x(), event->y(), mRadius, mCurrentLabel, false);
         else if (event->buttons() & Qt::RightButton)
           labelPoints(event->x(), event->y(), mRadius, mCurrentLabel, true);
-
         updateGL();
+        updateLabels();
       } else if (mMode == POLYGON) {
         if (polygonPoints_.size() > 0) {
           polygonPoints_.back().x = event->x();

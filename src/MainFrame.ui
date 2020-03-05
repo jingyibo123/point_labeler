@@ -138,6 +138,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionReload"/>
+    <addaction name="actionUndo"/>
     <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
@@ -200,6 +201,7 @@
    <addaction name="separator"/>
    <addaction name="actionReload"/>
    <addaction name="separator"/>
+   <addaction name="actionUndo"/>
    <addaction name="actionPaintMode"/>
    <addaction name="actionPolygonMode"/>
    <addaction name="separator"/>
@@ -1451,6 +1453,11 @@
   <action name="actionOpen">
    <property name="text">
     <string>&amp;Open...</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="text">
+    <string>&amp;Undo</string>
    </property>
   </action>
   <action name="actionPaintMode">
