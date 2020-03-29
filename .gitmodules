@@ -1,4 +1,4 @@
 [submodule "glow"]
 	path = glow
-	url = http://jingyibo@git.kuandeng.com/scm/~jingyibo/glow.git
-	branch = mingw64
+    url = https://github.com/jingyibo123/glow.git
+    branch = mingw64
