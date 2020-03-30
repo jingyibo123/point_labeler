@@ -28,21 +28,22 @@ set(EIGEN_INCLUDE_DIR "F:/Programs/eigen-3.2.9")
 # find_package(catkin COMPONENTS 
 #      glow)
 
-set(GLOW_DIR "${CMAKE_SOURCE_DIR}/glow")
+set(GLOW_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/glow" CACHE STRING "Directory containing glow source code")
+#option(GLOW_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/glow")
 
 
-message(STATUS "Using GLOW in ${GLOW_DIR}")
+message(STATUS "Using GLOW in ${GLOW_SOURCE_DIR}")
 
-add_subdirectory(${GLOW_DIR} ${GLOW_DIR}/build)
+add_subdirectory(${GLOW_SOURCE_DIR} ${GLOW_SOURCE_DIR}/build)
 
-set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${GLOW_DIR}/cmake")
-file(GLOB glowCmakeFiles ${GLOW_DIR}/cmake/*.cmake)
+set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${GLOW_SOURCE_DIR}/cmake")
+file(GLOB glowCmakeFiles ${GLOW_SOURCE_DIR}/cmake/*.cmake)
 foreach(cmakeFile ${glowCmakeFiles})
     message("INCLUDE ${cmakeFile}")
     INCLUDE(${cmakeFile})
 endforeach(cmakeFile)
 
-include_directories(/home/yibo/workspace/dl/point_labeler/catkin_ws/src/glow/src)
+#include_directories(/home/yibo/workspace/dl/point_labeler/catkin_ws/src/glow/src)
 
 #find_package(catkin COMPONENTS
 #     glow)
@@ -140,27 +141,29 @@ add_executable(labeler
 )
 
 if(NOT GTEST_FOUND)
- 
-  IF(IS_DIRECTORY "/usr/src/gtest/")
-    MESSAGE(STATUS "Found google test sources in /usr/src/gtest/") 
-    
-    ADD_SUBDIRECTORY(/usr/src/gtest/ gtest)
-    
-    # mimick the behaviour of find_package(GTest)
-    SET(GTEST_FOUND TRUE)
-    SET(GTEST_BOTH_LIBRARIES gtest gtest_main)
-    SET(GTEST_LIBRARIES gtest)
-    SET(GTEST_MAIN_LIBRARIES gtest_main)
-  ELSE()
-    find_package(GTest)
+  find_package(GTest)
+  IF(NOT GTEST_FOUND)
+    IF(IS_DIRECTORY "/usr/src/gtest/")
+      MESSAGE(STATUS "Found google test sources in /usr/src/gtest/")
+
+      ADD_SUBDIRECTORY(/usr/src/gtest/ gtest)
+
+      # mimick the behaviour of find_package(GTest)
+      SET(GTEST_FOUND TRUE)
+      SET(GTEST_BOTH_LIBRARIES gtest gtest_main)
+      SET(GTEST_LIBRARIES gtest)
+      SET(GTEST_MAIN_LIBRARIES gtest_main)
+    ELSE()
+      MESSAGE(WARNING "Unable to find GTEST")
+    ENDIF()
   ENDIF()
 endif()
 
 
-#if(GTEST_FOUND)
-#  enable_testing()
-#  add_subdirectory(src/test)
-#endif()
+if(GTEST_FOUND)
+  enable_testing()
+  add_subdirectory(src/test)
+endif()
 
 target_link_libraries(labeler ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} pthread Qt5::Xml Qt5::OpenGL Qt5::Widgets)
 

@@ -1,7 +1,7 @@
 #ifndef SRC_DATA_POINTCLOUD_H_
 #define SRC_DATA_POINTCLOUD_H_
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 #include "geometry.h"
 
 /** \brief a laserscan with possibly remission.
