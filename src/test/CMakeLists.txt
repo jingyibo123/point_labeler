@@ -13,3 +13,6 @@ add_executable(test_core
 
 
 target_link_libraries(test_core PRIVATE ${GTEST_MAIN_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} pthread Qt5::Xml Qt5::OpenGL Qt5::Widgets)
+
+
+target_link_libraries(test_core PRIVATE glow glow_util)

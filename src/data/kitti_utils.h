@@ -1,7 +1,7 @@
 #ifndef INCLUDE_CORE_KITTI_UTILS_H_
 #define INCLUDE_CORE_KITTI_UTILS_H_
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 #include <map>
 #include <string>
 #include <vector>

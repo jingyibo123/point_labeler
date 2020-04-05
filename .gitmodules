@@ -1,0 +1,4 @@
+[submodule "glow"]
+	path = glow
+	url = https://github.com/jingyibo123/glow.git
+	branch = windows

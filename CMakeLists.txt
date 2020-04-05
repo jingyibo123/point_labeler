@@ -6,33 +6,36 @@ set(CMAKE_C_FLAGS "-Wall -O3 -g")
 set(CMAKE_CXX_FLAGS "-Wall -O3 -g")
 
 find_package(OpenGL REQUIRED)
-find_package(Qt5Xml REQUIRED)
-find_package(Qt5Gui REQUIRED) 
-find_package(Qt5OpenGL REQUIRED)
+
+find_package(Qt5 REQUIRED COMPONENTS Xml Gui OpenGL)
+
 find_package(GLEW REQUIRED)
+
 find_package(Boost REQUIRED COMPONENTS filesystem system)
 
-find_package(catkin COMPONENTS 
-     glow)
+set(GLOW_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/glow" CACHE STRING "Directory containing glow source code")
 
-if(catkin_FOUND)
-  message("Found catkin")
-  catkin_package(
-    CATKIN_DEPENDS
-      glow
-    DEPENDS
-      Boost
-  )
-endif()
+message(STATUS "Using GLOW in ${GLOW_SOURCE_DIR}")
 
-include_directories(${catkin_INCLUDE_DIRS} src/ ${QT5_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} /usr/include/eigen3)
+add_subdirectory(${GLOW_SOURCE_DIR} ${GLOW_SOURCE_DIR}/build)
+
+set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${GLOW_SOURCE_DIR}/cmake")
+file(GLOB glowCmakeFiles ${GLOW_SOURCE_DIR}/cmake/*.cmake)
+foreach(cmakeFile ${glowCmakeFiles})
+    message("INCLUDE ${cmakeFile}")
+    INCLUDE(${cmakeFile})
+endforeach(cmakeFile)
+
+find_package(EIGEN REQUIRED)
+
+include_directories(src/ ${QT5_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${EIGEN_INCLUDE_DIR})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON) # needs to be activated for qt generated files in build directory.
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_FLAGS "-std=c++11 -O3  -Wall ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS "-UDEBUG_GL -UDEBUG -DNDEBUG -g2 ${CMAKE_CXX_FLAGS}")
 
-# configure_file(assets/labels.xml ${CMAKE_SOURCE_DIR}/bin/labels.xml COPYONLY)
+configure_file(assets/labels.xml ${CMAKE_SOURCE_DIR}/bin/labels.xml COPYONLY)
 ADD_CUSTOM_TARGET(link_labels ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/assets/labels.xml ${CMAKE_SOURCE_DIR}/bin/labels.xml)
 
 # ensure that custom configuration file is not overwritten.
@@ -107,19 +110,21 @@ add_executable(labeler
 )
 
 if(NOT GTEST_FOUND)
- 
-  IF(IS_DIRECTORY "/usr/src/gtest/")
-    MESSAGE(STATUS "Found google test sources in /usr/src/gtest/") 
-    
-    ADD_SUBDIRECTORY(/usr/src/gtest/ gtest)
-    
-    # mimick the behaviour of find_package(GTest)
-    SET(GTEST_FOUND TRUE)
-    SET(GTEST_BOTH_LIBRARIES gtest gtest_main)
-    SET(GTEST_LIBRARIES gtest)
-    SET(GTEST_MAIN_LIBRARIES gtest_main)
-  ELSE()
-    find_package(GTest)
+  find_package(GTest)
+  IF(NOT GTEST_FOUND)
+    IF(IS_DIRECTORY "/usr/src/gtest/")
+      MESSAGE(STATUS "Found google test sources in /usr/src/gtest/")
+
+      ADD_SUBDIRECTORY(/usr/src/gtest/ gtest)
+
+      # mimick the behaviour of find_package(GTest)
+      SET(GTEST_FOUND TRUE)
+      SET(GTEST_BOTH_LIBRARIES gtest gtest_main)
+      SET(GTEST_LIBRARIES gtest)
+      SET(GTEST_MAIN_LIBRARIES gtest_main)
+    ELSE()
+      MESSAGE(WARNING "Unable to find GTEST")
+    ENDIF()
   ENDIF()
 endif()
 
@@ -129,5 +134,8 @@ if(GTEST_FOUND)
   add_subdirectory(src/test)
 endif()
 
-target_link_libraries(labeler ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} pthread Qt5::Xml Qt5::OpenGL Qt5::Widgets)
+target_link_libraries(labeler ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} pthread Qt5::Xml Qt5::OpenGL Qt5::Widgets)
+
+
+target_link_libraries(labeler glow glow_util)
 

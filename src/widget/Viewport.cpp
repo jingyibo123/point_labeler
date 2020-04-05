@@ -1032,10 +1032,10 @@ uint32_t Viewport::getClickedInstanceId(float x, float y) {
   return (instance_id << 16 | label_id);
 }
 
-std::ostream& operator<<(std::ostream& os, const vec2& v) {
-  os << "(" << v.x << ", " << v.y << ")";
-  return os;
-}
+// std::ostream& operator<<(std::ostream& os, const vec2& v) {
+//   os << "(" << v.x << ", " << v.y << ")";
+//   return os;
+// }
 
 void Viewport::abortPolygonSelection() {
   polygonPoints_.clear();  // start over again.#

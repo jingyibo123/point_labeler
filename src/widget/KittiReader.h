@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <QtCore/QDir>
 #include <QtCore/QString>
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 #include <string>
 #include <vector>
 #include "common.h"
